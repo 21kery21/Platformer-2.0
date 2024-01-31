@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<style>
+  #game-container {
+    position: relative;
+    top: 50px;
+    width: 1240px;
+    height: 360px;
+    border: 2px solid rgb(0, 0, 0);
+    background-color: rgb(196, 251, 255);
+    background-image: url('assets/sky.jpg');
+    overflow: hidden;
+  }
+
+  #player {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 30px;
+  height: 30px;
+  background-color: #00F;
+  border: 1px solid rgb(0, 0, 0);
+  transition: linear; /* Плавний перехід при зміні положення гравця */
+}
+
+#player.jump {
+  animation: jumpAnimation 1.5s ease forwards;
+}
+
+@keyframes jumpAnimation {
+  0% { bottom: 0; }
+  50% { bottom: 100px; } /* Висота стрибка */
+  100% { bottom: 0; }
+}
+  
+
+  .item {
+    position: absolute;
+    width: 20px;
+    height: 20px;
+    background-color: #F00;
+    border: 1px solid rgb(0, 0, 0);
+  }
+  .bullet {
+    position: absolute;
+    width: 5px;
+    height: 5px;
+    background-color: bisque;
+    border: 1px solid rgb(0, 0, 0);
+  }
+
+  .spike {
+    position: absolute;
+    width: 10;
+    bottom: 0;
+    height: 10;
+    border-left: 10px solid transparent;
+    border-right: 10px solid transparent;
+    border-bottom: 20px solid black;
+  }
+
+  #score {
+    position: absolute;
+    color: gold;
+    font-family: cursive;
+    top: 5px;
+    left: 20px;
+    font-size: 36px;
+  }
+
+  #platform {
+    position: absolute;
+    top: 260px;
+    left: 200px;
+    bottom: 0;
+    width: 100px;
+    height: 5px;
+    border: 1px solid rgb(0, 0, 0);
+    background-color: bisque;
+  }
+
+</style>
+<title>Test_Game</title>
+</head>
+<body>
+<div id="game-container">
+  <div id="player"></div>
+  <div id="platform"></div>
+</div>
+<div id="score">Score: <span id="score-value">0</span></div>
+<script src="game.js"></script>
+</body>
+</html>
