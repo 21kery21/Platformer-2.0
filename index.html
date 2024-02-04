@@ -35,7 +35,17 @@
   50% { bottom: 100px; } /* Висота стрибка */
   100% { bottom: 0; }
 }
-  
+
+#player.jump2 {
+  animation: jumpAnimation2 1.5s ease forwards;
+}
+
+@keyframes jumpAnimation2 {
+  0% { bottom: 100px; }
+  50% { bottom: 200px; } 
+  100% { bottom: 100px; }
+}
+
 
   .item {
     position: absolute;
@@ -62,6 +72,31 @@
     border-bottom: 20px solid black;
   }
 
+  .circle {
+    position: absolute;
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    background-color: yellow;
+    border: 1px solid rgb(0, 0, 0);
+    animation: shining 1s infinite alternate;
+  }
+
+  @keyframes shining {
+        0% {
+            background-color: rgb(238, 255, 0); /* Початковий колір */
+            box-shadow: 0 0 10px rgb(238, 255, 0); /* Тінь, що надає свічення */
+        }
+        50% {
+            background-color: rgb(237, 243, 152); /* Кінцевий колір */
+            box-shadow: 0 0 20px rgb(237, 243, 152); /* Збільшена тінь */
+        }
+        100% {
+            background-color: rgb(251, 252, 246); /* Повторне відображення початкового коліру */
+            box-shadow: 0 0 10px rgb(251, 252, 246); /* Початкова тінь */
+        }
+    }
+
   #score {
     position: absolute;
     color: gold;
@@ -71,12 +106,31 @@
     font-size: 36px;
   }
 
+  #HP {
+    position: absolute;
+    color: red;
+    font-family: cursive;
+    top: 5px;
+    left: 200px;
+    font-size: 36px;
+  }
+
   #platform {
     position: absolute;
     top: 260px;
     left: 200px;
     bottom: 0;
-    width: 100px;
+    width: 300px;
+    height: 5px;
+    border: 1px solid rgb(0, 0, 0);
+    background-color: bisque;
+  }
+  #platform2 {
+    position: absolute;
+    top: 260px;
+    left: 900px;
+    bottom: 0;
+    width: 200px;
     height: 5px;
     border: 1px solid rgb(0, 0, 0);
     background-color: bisque;
@@ -89,8 +143,10 @@
 <div id="game-container">
   <div id="player"></div>
   <div id="platform"></div>
+  <div id="platform2"></div>
 </div>
 <div id="score">Score: <span id="score-value">0</span></div>
+<div id="HP">Health: <span id="HP-value">100</span></div>
 <script src="game.js"></script>
 </body>
 </html>
