@@ -46,7 +46,15 @@
   100% { bottom: 100px; }
 }
 
+#player.minjump {
+  animation: minjumpAnimation 1.125s ease forwards;
+}
 
+@keyframes minjumpAnimation {
+  0% { bottom: 0; }
+  50% { bottom: 60px; } /* Висота стрибка */
+  100% { bottom: 0; }
+}
   .item {
     position: absolute;
     width: 20px;
@@ -54,6 +62,16 @@
     background-color: #F00;
     border: 1px solid rgb(0, 0, 0);
   }
+
+  .gold_item {
+    position: absolute;
+    width: 20px;
+    height: 20px;
+    background-color: rgb(251, 255, 37);
+    border: 1px solid rgb(0, 0, 0);
+  }
+
+
   .bullet {
     position: absolute;
     width: 5px;
@@ -145,7 +163,7 @@
   <div id="platform"></div>
   <div id="platform2"></div>
 </div>
-<div id="score">Score: <span id="score-value">0</span></div>
+<div id="score">Money: <span id="score-value">0</span></div>
 <div id="HP">Health: <span id="HP-value">100</span></div>
 <script src="game.js"></script>
 </body>
