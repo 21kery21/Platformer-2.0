@@ -37,7 +37,7 @@ document.addEventListener("DOMContentLoaded", function() {
 
   
 
-  function spawnItem() { //спавн червоних квадратів //p. s. куча невідокремленого лишнього
+  function spawnItem() { //спавн червоних квадратів 
       const item = document.createElement("div");
       item.classList.add("item");
       const size = Math.floor(Math.random() * (25 - 7 + 1)) + 7;
@@ -54,7 +54,7 @@ document.addEventListener("DOMContentLoaded", function() {
         itemPositionY += fallSpeed;
         item.style.top = itemPositionY + "px";
   
-        // Видалення айтемів за фреймом   
+        // Видалення айтемів за фреймом   //p. s. куча невідокремленого лишнього
         if (itemPositionY > gameContainer.offsetHeight) {
           item.remove();
           clearInterval(fallInterval);
@@ -89,25 +89,62 @@ document.addEventListener("DOMContentLoaded", function() {
       });
     }
   
-    setInterval(spawnItem, 100);
+  setInterval(spawnItem, 100);
+
+  function spawnGoldItem() { //спавн Золотих квадратів 
+    const gold_item = document.createElement("div");
+    gold_item.classList.add("gold_item");
+    const size = Math.floor(Math.random() * (25 - 7 + 1)) + 7;
+    gold_item.style.top = "0px";
+    gold_item.style.left = Math.floor(Math.random() * (gameContainer.offsetWidth - 10)) + "px";
+    gold_item.style.width = size + "px";
+    gold_item.style.height = size + "px";
+    gameContainer.appendChild(gold_item);
+
+    // Падіння айтемів
+    let gold_itemPositionY = 0;
+    const fallSpeed = 2;
+    const fallInterval = setInterval(() => {
+      gold_itemPositionY += fallSpeed;
+      gold_item.style.top = gold_itemPositionY + "px";
+
+      // Видалення айтемів за фреймом   //p. s. куча невідокремленого лишнього
+      if (gold_itemPositionY > gameContainer.offsetHeight) {
+        gold_item.remove();
+        clearInterval(fallInterval);
+      } else if (checkCollision(player, gold_item)) { //item coll pl
+        HPDisplay.textContent = parseInt(HPDisplay.textContent) - 75; //-hp
+        gold_item.remove(); //-item
+        clearInterval(fallInterval);
+      }}, 20);
+
+    gold_item.addEventListener("click", function() {//функціонал кліка мишки
+      gold_item.style.display = "none";
+      score+=3;
+      scoreDisplay.textContent = score;
+      clearInterval(fallInterval);
+    });
+  }
+
+  setInterval(spawnGoldItem, 1000);
 
   document.addEventListener("keydown", function(event) { //функціонал клавіш
     switch(event.key) {
-      case "ArrowLeft":
+      case "a":
         if (onPlat === false || (playerY >= 100 && playerX > 200 && playerX < 510) || 
         (playerY >= 100 && playerX > 900)){  
           playerX -= 20;
           if (playerX < 0) playerX = 0; 
         }
         break;
-      case "ArrowRight":
+      case "d":
         if (onPlat === false || (playerY >= 100 && playerX < 480) || 
         (playerY >= 100 && playerX > 800 && playerX < 1080)){
           playerX += 20;
           if (playerX > gameContainer.offsetWidth - player.offsetWidth) playerX = gameContainer.offsetWidth - player.offsetWidth;
         }
         break;
-      case "ArrowUp": //171 //519 //871 //1119
+      case "w": //171 //519 //871 //1119
         if (playerY === 100 && ((playerX >= 171 && playerX <= 519) || (playerX >= 871 && playerX <= 1119))){   
           player.classList.add("jump2");
           playerY += 100; // Відстань стрибка
@@ -135,7 +172,19 @@ document.addEventListener("DOMContentLoaded", function() {
         }
         
         break;
-      case "ArrowDown":
+      case " ":
+        if(playerY === 0){
+          player.classList.add("minjump");
+          playerY += 60;
+          movePlayer(playerX, playerY);
+          {setTimeout(() => {
+            if (playerY !== 0){playerY -= 60;
+              player.classList.remove("minjump"); // Повертаємо гравця на землю
+            movePlayer(playerX, playerY);}
+          }, 1125); // Час підйому і падіння в мілісекундах 
+      }}
+        break;
+      case "s":
         if (onPlat){
           onPlat = false;
           playerY -= 100;
@@ -145,7 +194,7 @@ document.addEventListener("DOMContentLoaded", function() {
       case "1":
         spawnCircle();
         break;
-      case "0":
+      case "q":
           if (canShoot) { // Перевірка, чи може гравець випустити пулю
               // Створення пулі та відправка її вверх
               const bullet = document.createElement("div");
@@ -166,13 +215,20 @@ document.addEventListener("DOMContentLoaded", function() {
               const bulletInterval = setInterval(() => {
                 const bulletY = parseInt(bullet.style.bottom);
                 bullet.style.bottom = bulletY + bulletSpeed + "px";
-                const items = document.querySelectorAll(".item");
+                const items = document.querySelectorAll(".item"); //item coll bull
                 items.forEach(item => {
                   if (checkCollision(bullet, item)) {
                     bullet.remove();
                     item.remove();
                     scoreDisplay.textContent = score;
                   }
+                const gold_items = document.querySelectorAll(".gold_item"); //gitem coll bull
+                gold_items.forEach(gold_item => {
+                  if (checkCollision(bullet, gold_item)){
+                    bullet.remove();
+                    gold_item.remove();
+                  }
+                })
                 });
                 // Перевірка чи пуля вийшла за межі сцени
                 if (parseInt(bullet.style.bottom) > gameContainer.offsetHeight) {
@@ -182,7 +238,7 @@ document.addEventListener("DOMContentLoaded", function() {
               }, 20);
             }
             break;
-            case " ":
+            case "e":
               if (canShoot2) {
                   // Перевірка, чи може гравець випустити пулю
                   canShoot2 = false;
@@ -214,7 +270,15 @@ document.addEventListener("DOMContentLoaded", function() {
                               bullet.remove();
                               clearInterval(bulletInterval);
                           }
-                          const items = document.querySelectorAll(".item");
+                          const gold_items = document.querySelectorAll(".gold_item"); //gitem coll bull
+                          gold_items.forEach(gold_item => {
+                            if (checkCollision(bullet, gold_item)) {
+                              bullet.remove();
+                              gold_item.remove();
+                              scoreDisplay.textContent = score;
+                            }
+                          })
+                          const items = document.querySelectorAll(".item"); //item coll bull
                           items.forEach(item => {
                               if (checkCollision(bullet, item)) {
                                   bullet.remove();
@@ -241,6 +305,7 @@ document.addEventListener("DOMContentLoaded", function() {
     circle.style.left = Math.floor(Math.random() * (gameContainer.offsetWidth - 50)) + "px";
     gameContainer.appendChild(circle);
     score -= 10;
+    scoreDisplay.textContent = score;
   }}
 
 
@@ -262,6 +327,7 @@ document.addEventListener("DOMContentLoaded", function() {
           spike.remove(); // Видаляємо кожний елемент зі списку
       });
   }
+
 
   function restartScene() { //рестарт гри
       despawnSpikes(); //старі шипи
