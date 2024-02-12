@@ -4,6 +4,8 @@ document.addEventListener("DOMContentLoaded", function() {
   const scoreDisplay = document.getElementById("score-value");
   const HPDisplay = document.getElementById("HP-value");
   const platform = document.getElementById("platform");
+  var button = document.getElementById("button");
+  var button2 = document.getElementById("button2");
 
 
   let playerX = 0;
@@ -194,6 +196,11 @@ document.addEventListener("DOMContentLoaded", function() {
       case "1":
         spawnCircle();
         break;
+      case "2":
+        if (score >= 5){
+          delrsp()
+        }
+        break;
       case "q":
           if (canShoot) { // Перевірка, чи може гравець випустити пулю
               // Створення пулі та відправка її вверх
@@ -296,6 +303,24 @@ document.addEventListener("DOMContentLoaded", function() {
   });
 
 
+  button.addEventListener("click", function(){
+    if (score >= 10) {
+      spawnCircle();
+    }
+  })
+
+  button2.addEventListener("click", function(){
+    if (score >= 5) {
+      delrsp();
+    }
+  })
+
+  function delrsp() {
+    const spk = document.querySelector(".spike");
+    spk.remove();
+    score -= 5;
+    scoreDisplay.textContent = score;
+  }
 
   function spawnCircle() { //спавн круга
     if(score >= 10){
@@ -328,9 +353,17 @@ document.addEventListener("DOMContentLoaded", function() {
       });
   }
 
+  function despawnCircles(){
+    const circles = document.querySelectorAll(".circle"); //Знаходимо всі елементи з класом "circle"
+    circles.forEach(circle => {
+      circle.remove(); // Видаляємо кожний елемент зі списку
+    })
+  }
+
 
   function restartScene() { //рестарт гри
       despawnSpikes(); //старі шипи
+      despawnCircles();
       HPDisplay.textContent = 100;
       playerX = 0;
       playerY = 0;
