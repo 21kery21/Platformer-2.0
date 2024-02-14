@@ -3,6 +3,7 @@ document.addEventListener("DOMContentLoaded", function() {
   const gameContainer = document.getElementById("game-container");
   const scoreDisplay = document.getElementById("score-value");
   const HPDisplay = document.getElementById("HP-value");
+  const UltDisplay = document.getElementById("Ult-value");
   const platform = document.getElementById("platform");
   var button = document.getElementById("button");
   var button2 = document.getElementById("button2");
@@ -13,6 +14,7 @@ document.addEventListener("DOMContentLoaded", function() {
   let platformX = platform.style.left;
   let platformY = platform.style.top;
   let score = 0;
+  let Ultz = 15;
   let bullets = [];
   let canShoot = true;
   let canShoot2 = true;
@@ -251,8 +253,17 @@ document.addEventListener("DOMContentLoaded", function() {
                   canShoot2 = false;
                   setTimeout(() => {
                       canShoot2 = true;
-                  }, 15000); // Затримка 15 секунд перед наступним випуском куль
-
+                      Ultz = 15;
+                  }, 15200); // Затримка 15 секунд перед наступним випуском куль
+                  UltDisplay.textContent = Ultz;
+                  const intervalID = setInterval(() => {
+                    if (Ultz > 0){
+                      Ultz -= 1;
+                      UltDisplay.textContent = Ultz;
+                    } else {
+                      clearInterval(intervalID);
+                    }
+                  }, 1000)
                   // Випуск 16 куль в різних напрямках
                   for (let i = 0; i < 32; i++) {
                       const bullet = document.createElement("div");
@@ -322,6 +333,7 @@ document.addEventListener("DOMContentLoaded", function() {
     scoreDisplay.textContent = score;
   }
 
+
   function spawnCircle() { //спавн круга
     if(score >= 10){
     const circle = document.createElement("div");
@@ -369,6 +381,7 @@ document.addEventListener("DOMContentLoaded", function() {
       playerY = 0;
       movePlayer(playerX, playerY);
       score = 0;
+      Ultz = 15;
       canShoot = true;
       canShoot2 = true;
       onPlat = false;
